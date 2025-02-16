@@ -25,7 +25,7 @@ class Account(SQLModel, table=True):
     bank: Banks = Field(default=Banks.ACTIVOBANK)
     status : Status = Field(default=Status.ACTIVE)
 
-class history(SQLModel, table=True):
+class History(SQLModel, table=True):
     id: int = Field(primary_key=True)
     account_id: int = Field(foreign_key="account.id")
     account: Account = Relationship()
