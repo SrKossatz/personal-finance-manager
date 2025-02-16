@@ -1,0 +1,9 @@
+# Ignorar todos os arquivos MP4
+*.mp4
+
+# Ignorar outros formatos de vídeo (opcional)
+*.avi
+*.mov
+*.mkv
+*.wmv
+venv/

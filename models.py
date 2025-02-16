@@ -1,5 +1,7 @@
-from sqlmodel import SQLModel, Field, create_engine
+from datetime import datetime
+from sqlmodel import SQLModel, Field, create_engine, Relationship
 from enum import Enum
+
 
 class Banks(Enum):
     ACTIVOBANK = "ActivoBank"
@@ -12,11 +14,26 @@ class Status(Enum):
     BLOCKED = "Blocked"
     PENDING = "Pending"
 
+class Types(Enum):
+    DEPOSIT = "Deposit"
+    WITHDRAW = "Withdraw"
+   
+
 class Account(SQLModel, table=True):
     id: int = Field(primary_key=True)
     value: float
     bank: Banks = Field(default=Banks.ACTIVOBANK)
     status : Status = Field(default=Status.ACTIVE)
+
+class history(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    account_id: int = Field(foreign_key="account.id")
+    account: Account = Relationship()
+    type: Types = Field(default=Types.DEPOSIT)
+    value: float
+    date: str = Field(default=datetime.now())
+
+
 
 
 sqlite_file_name = "database.db"

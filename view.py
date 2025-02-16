@@ -1,5 +1,6 @@
 from models  import Account, Banks, Status, engine
 from sqlmodel import Session, select
+from datetime import datetime
 
 def create_account(account: Account):
   with Session(engine) as session:
@@ -43,11 +44,27 @@ def transfer_money(id_from, id_to, value):
   with Session(engine) as session:
     statement = select(Account).where(Account.id == id_from)
     account_from = session.exec(statement).first()
+    
+    if account_from.value < value:
+      raise ValueError("Insufficient funds")
+    
+    statement = select(Account).where(Account.id == id_to)
+    account_to = session.exec(statement).first()
+    
+    account_from.value -= value
+    account_to.value += value
+    session.commit()
+    
+
+
+
 
 
 
 # account = Account(value=0, bank=Banks.SANTANDER)
 # create_account(account)
 # desactivate_account(3)
+# transfer_money(1, 2, 10)
 
-# parei em 1H20min
+
+# parei em 1H33
